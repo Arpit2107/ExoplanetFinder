@@ -1,0 +1,184 @@
+/* Exoplanet Finder Dashboard - Global Styles */
+/* Mission Control aesthetic */
+
+@import './tokens.css';
+
+/* === RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background: var(--bg-canvas);
+  height: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Force tabular figures for all numbers */
+body, input, select, textarea, button {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+/* Headings use heading font */
+h1, h2, h3, h4, h5, h6,
+.panel-title, .readout-label, .ticker-item {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Selection */
+::selection {
+  background: var(--semantic-amber);
+  color: var(--bg-canvas);
+}
+
+/* Scrollbar - minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-primary);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--corner-bracket);
+}
+
+/* === CANVAS GRID BACKGROUND === */
+.canvas-grid {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-base);
+  pointer-events: none;
+  background-image:
+    /* Fine dot grid */
+    radial-gradient(circle at center, var(--line-secondary) 0.5px, transparent 0.5px),
+    /* Major crosshair grid */
+    linear-gradient(var(--line-secondary) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, var(--line-secondary) 0.5px, transparent 0.5px);
+  background-size:
+    24px 24px,
+    120px 120px,
+    120px 120px;
+  background-position: center center;
+  opacity: 0.4;
+}
+
+/* Scanline sweep animation */
+@keyframes scanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--scan-line), transparent);
+  z-index: var(--z-overlay);
+  pointer-events: none;
+  animation: scanline var(--scanline-duration) ease-out forwards;
+}
+
+/* Slow rotation for sphere */
+@keyframes slow-rotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.slow-rotate {
+  animation: slow-rotate var(--rotation-speed) linear infinite;
+}
+
+/* Count-up animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(0.5em); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.count-up {
+  animation: count-up var(--count-up-duration) ease-out forwards;
+}
+
+/* Panel load scanline */
+@keyframes panel-scan {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.panel-scan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--semantic-amber), transparent);
+  animation: panel-scan var(--scanline-duration) ease-out forwards;
+}
+
+/* === UTILITY CLASSES === */
+.text-amber { color: var(--semantic-amber); }
+.text-red { color: var(--semantic-red); }
+.text-green { color: var(--semantic-green); }
+.text-white { color: var(--semantic-white); }
+.text-secondary { color: var(--text-secondary); }
+.text-dim { color: var(--text-dim); }
+
+.font-heading { font-family: var(--font-heading); }
+.font-mono { font-family: var(--font-mono); }
+
+.uppercase { text-transform: uppercase; }
+.letter-spacing-tight { letter-spacing: -0.02em; }
+.letter-spacing-wide { letter-spacing: 0.1em; }
+
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 1px solid var(--semantic-amber);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

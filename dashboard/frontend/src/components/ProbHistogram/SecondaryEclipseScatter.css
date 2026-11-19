@@ -1,0 +1,293 @@
+/* SecondaryEclipseScatter - Model probability vs secondary eclipse depth scatter */
+/* Styled to design system: hairlines, mono ticks, no library themes */
+
+.sececlip {
+  display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+.sececlip__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Gridlines */
+.sececlip__gridlines {
+  pointer-events: none;
+}
+
+.sececlip__gridline {
+  stroke: var(--line-secondary);
+  stroke-width: var(--corner-bracket-weight);
+  stroke-dasharray: 2 4;
+}
+
+.sececlip__gridline--major {
+  stroke: var(--line-primary);
+  stroke-dasharray: none;
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Skeleton loading state */
+.sececlip__gridline--skeleton {
+  animation: sececlip-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes sececlip-shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Binary threshold line */
+.sececlip__threshold {
+  pointer-events: none;
+}
+
+.sececlip__threshold-line {
+  transition: opacity var(--transition-fast);
+}
+
+.sececlip__threshold-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Axes */
+.sececlip__axes {
+  pointer-events: none;
+}
+
+.sececlip__axis {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Ticks */
+.sececlip__x-ticks,
+.sececlip__y-ticks {
+  pointer-events: none;
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+}
+
+.sececlip__tick {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.sececlip__tick--major {
+  stroke: var(--line-secondary);
+}
+
+.sececlip__tick-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Axis labels */
+.sececlip__axis-labels {
+  pointer-events: none;
+}
+
+.sececlip__axis-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  fill: var(--text-secondary);
+}
+
+/* Points */
+.sececlip__points {
+  pointer-events: none;
+}
+
+.sececlip__point {
+  transition: r var(--transition-fast), opacity var(--transition-fast);
+}
+
+.sececlip__point--pc {
+  /* Fill applied via fill="url(#sececlip-gradient-pc)" */
+}
+
+.sececlip__point--fp {
+  /* Fill applied via fill="url(#sececlip-gradient-fp)" */
+}
+
+/* Hover state for points */
+.sececlip__point--hover .sececlip__point {
+  r: 7;
+  opacity: 1;
+  stroke-width: 2;
+}
+
+/* Binary suspect ring */
+.sececlip__binary-ring {
+  pointer-events: none;
+  animation: sececlip-ring-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sececlip-ring-pulse {
+  0% { opacity: 0.4; r: 7; }
+  50% { opacity: 0.7; r: 9; }
+  100% { opacity: 0.4; r: 7; }
+}
+
+/* Legend */
+.sececlip__legend {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.sececlip__legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sececlip__legend-item--binary {
+  opacity: 0.8;
+}
+
+.sececlip__legend-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sececlip__legend-count {
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Total label */
+.sececlip__total-label {
+  pointer-events: none;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Split label */
+.sececlip__split-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Tooltip */
+.sececlip__tooltip {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.sececlip__tooltip-bg {
+  fill: var(--bg-panel);
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.sececlip__tooltip-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sececlip__tooltip-row {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+.sececlip__tooltip-label {
+  fill: var(--text-secondary);
+}
+
+.sececlip__tooltip-value {
+  fill: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Error and empty states */
+.sececlip__error,
+.sececlip__empty {
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .sececlip__gridline--skeleton {
+    animation: none;
+    opacity: 0.4;
+  }
+  .sececlip__point,
+  .sececlip__binary-ring {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .sececlip__gridline,
+  .sececlip__axis,
+  .sececlip__tick,
+  .sececlip__threshold-line {
+    stroke: CanvasText;
+  }
+  .sececlip__tick-label,
+  .sececlip__axis-label {
+    fill: CanvasText;
+  }
+  .sececlip__point--pc {
+    fill: CanvasText;
+    opacity: 0.8;
+  }
+  .sececlip__point--fp {
+    fill: CanvasText;
+    opacity: 0.5;
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+  .sececlip__binary-ring {
+    stroke: CanvasText;
+  }
+  .sececlip__threshold-line {
+    stroke: CanvasText;
+  }
+  .sececlip__threshold-label {
+    fill: CanvasText;
+  }
+  .sececlip__legend-label,
+  .sececlip__legend-count {
+    fill: CanvasText;
+  }
+  .sececlip__tooltip-bg {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .sececlip__tooltip-title,
+  .sececlip__tooltip-value {
+    fill: CanvasText;
+  }
+  .sececlip__tooltip-label {
+    fill: CanvasText;
+  }
+}

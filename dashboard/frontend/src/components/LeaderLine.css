@@ -1,0 +1,31 @@
+/* LeaderLine - Thin SVG line between two points */
+
+.leader-line {
+  display: block;
+  overflow: visible;
+}
+
+.leader-line line {
+  fill: none;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Color variants - semantic meaning coded, not decorative */
+.leader-line--red line {
+  stroke: var(--semantic-red);
+}
+
+.leader-line--amber line {
+  stroke: var(--semantic-amber);
+}
+
+.leader-line--primary line {
+  stroke: var(--line-primary);
+}
+
+/* Hairline weight - 1px default, respecting strokeWidth prop */
+.leader-line line {
+  stroke-width: 1;
+}

@@ -1,0 +1,90 @@
+/* Ruler - Tick-mark ruler for chart axes */
+
+.ruler {
+  position: absolute;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  z-index: 5;
+}
+
+.ruler--horizontal {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: var(--space-1);
+  border-top: var(--border-hairline);
+}
+
+.ruler--vertical {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-right: var(--space-1);
+  border-right: var(--border-hairline);
+}
+
+.ruler__tick {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.ruler--horizontal .ruler__tick {
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.ruler--vertical .ruler__tick {
+  left: 0;
+  transform: translateY(50%);
+}
+
+.ruler__tick::before {
+  content: '';
+  width: var(--corner-bracket-weight);
+  height: var(--space-2);
+  background: var(--line-primary);
+}
+
+.ruler--vertical .ruler__tick::before {
+  width: var(--space-2);
+  height: var(--corner-bracket-weight);
+}
+
+.ruler__label {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+.ruler--horizontal .ruler__label {
+  margin-top: var(--space-1);
+}
+
+.ruler--vertical .ruler__label {
+  margin-right: var(--space-2);
+}
+
+/* Major tick (every 5th) */
+.ruler__tick--major::before {
+  height: var(--space-3);
+  background: var(--line-secondary);
+}
+
+.ruler--vertical .ruler__tick--major::before {
+  width: var(--space-3);
+  height: var(--corner-bracket-weight);
+}

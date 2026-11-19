@@ -1,0 +1,125 @@
+/* ErrorBoundary - Fallback UI for crashed components */
+
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: var(--space-6);
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.error-boundary__content {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.error-boundary__icon {
+  color: var(--semantic-red);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.error-boundary__title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--semantic-red);
+  margin: 0;
+}
+
+.error-boundary__message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.error-boundary__details {
+  width: 100%;
+  text-align: left;
+  border: var(--border-hairline);
+  background: var(--bg-canvas);
+  padding: var(--space-3);
+  margin: 0;
+}
+
+.error-boundary__details summary {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.error-boundary__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.error-boundary__details summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform var(--transition-fast);
+}
+
+.error-boundary__details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.error-boundary__stack {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--semantic-red);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.error-boundary__retry-btn {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bg-canvas);
+  background: var(--semantic-amber);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.error-boundary__retry-btn:hover {
+  background: var(--semantic-amber-dim);
+  transform: scale(1.02);
+}
+
+.error-boundary__retry-btn:active {
+  transform: scale(0.98);
+}
+
+.error-boundary__retry-btn:focus-visible {
+  outline: 2px solid var(--semantic-amber);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .error-boundary__retry-btn {
+    transition: none;
+  }
+}

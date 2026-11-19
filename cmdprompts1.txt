@@ -1,0 +1,7 @@
+Frontend:
+cd "C:\Users\User8\Desktop\Coding\projects\fcc claude\exoplanet-finder\dashboard\frontend"
+npm run dev
+Backend:
+cd "C:\Users\User8\Desktop\Coding\projects\fcc claude\exoplanet-finder\dashboard"
+dir data
+findstr /n "GroupShuffleSplit tce_labeled views.npz" backend\main.py

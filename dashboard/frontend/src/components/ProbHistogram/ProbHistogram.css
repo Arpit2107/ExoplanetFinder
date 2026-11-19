@@ -1,0 +1,264 @@
+/* ProbHistogram - Stacked histogram by true label */
+/* Styled to design system: hairlines, mono ticks, no library themes */
+
+.probhist {
+  display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+.probhist__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Gridlines */
+.probhist__gridlines {
+  pointer-events: none;
+}
+
+.probhist__gridline {
+  stroke: var(--line-secondary);
+  stroke-width: var(--corner-bracket-weight);
+  stroke-dasharray: 2 4;
+}
+
+.probhist__gridline--major {
+  stroke: var(--line-primary);
+  stroke-dasharray: none;
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Skeleton loading state */
+.probhist__gridline--skeleton {
+  animation: probhist-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes probhist-shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Axes */
+.probhist__axes {
+  pointer-events: none;
+}
+
+.probhist__axis {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Ticks */
+.probhist__x-ticks,
+.probhist__y-ticks {
+  pointer-events: none;
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+}
+
+.probhist__tick {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.probhist__tick--major {
+  stroke: var(--line-secondary);
+}
+
+.probhist__tick-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Axis labels */
+.probhist__axis-labels {
+  pointer-events: none;
+}
+
+.probhist__axis-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  fill: var(--text-secondary);
+}
+
+/* Bars */
+.probhist__bars {
+  pointer-events: none;
+}
+
+.probhist__bar-segment {
+  transition: opacity var(--transition-fast);
+}
+
+.probhist__bar-segment--pc {
+  /* Fill applied via fill="url(#probhist-gradient-pc)" */
+}
+
+.probhist__bar-segment--afp {
+  /* Fill applied via fill="url(#probhist-gradient-afp)" */
+}
+
+/* Hover state for bars */
+.probhist__bar--hover .probhist__bar-segment {
+  opacity: 1;
+}
+
+.probhist__bar-highlight {
+  pointer-events: none;
+  animation: probhist-highlight-pulse 1s ease-in-out infinite;
+}
+
+@keyframes probhist-highlight-pulse {
+  0% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.15; }
+}
+
+/* Legend */
+.probhist__legend {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.probhist__legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.probhist__legend-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.probhist__legend-count {
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Total label */
+.probhist__total-label {
+  pointer-events: none;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Split label */
+.probhist__split-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Tooltip */
+.probhist__tooltip {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.probhist__tooltip-bg {
+  fill: var(--bg-panel);
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.probhist__tooltip-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.probhist__tooltip-row {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+.probhist__tooltip-label {
+  fill: var(--text-secondary);
+}
+
+.probhist__tooltip-value {
+  fill: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.probhist__tooltip-row--total {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Error and empty states */
+.probhist__error,
+.probhist__empty {
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .probhist__gridline--skeleton {
+    animation: none;
+    opacity: 0.4;
+  }
+  .probhist__bar-segment,
+  .probhist__bar-highlight {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .probhist__gridline,
+  .probhist__axis,
+  .probhist__tick {
+    stroke: CanvasText;
+  }
+  .probhist__tick-label,
+  .probhist__axis-label {
+    fill: CanvasText;
+  }
+  .probhist__bar-segment--pc {
+    fill: CanvasText;
+    opacity: 0.8;
+  }
+  .probhist__bar-segment--afp {
+    fill: CanvasText;
+    opacity: 0.5;
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+  .probhist__legend-label,
+  .probhist__legend-count {
+    fill: CanvasText;
+  }
+  .probhist__tooltip-bg {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .probhist__tooltip-title,
+  .probhist__tooltip-value {
+    fill: CanvasText;
+  }
+  .probhist__tooltip-label {
+    fill: CanvasText;
+  }
+}

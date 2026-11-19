@@ -1,0 +1,196 @@
+/* SkySphere - Kepler Field Celestial Sphere */
+
+.skysphere-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background: var(--bg-canvas);
+  overflow: hidden;
+}
+
+.skysphere-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.skysphere-loading,
+.skysphere-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.skysphere-error {
+  color: var(--semantic-red);
+}
+
+/* Tooltip */
+.skysphere-tooltip {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+  background: rgba(5, 7, 10, 0.95);
+  border: 1px solid var(--semantic-amber);
+  border-radius: 4px;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+  min-width: 180px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  transform: translateX(0);
+  transition: transform 0.1s ease-out;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: 2px;
+}
+
+.tooltip-row:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tooltip-value {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  min-width: 80px;
+}
+
+.tooltip-value.text-amber {
+  color: var(--semantic-amber);
+}
+
+.tooltip-row.text-red {
+  color: var(--semantic-red);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  justify-content: center;
+}
+
+/* Legend */
+.skysphere-legend {
+  position: absolute;
+  bottom: var(--space-4);
+  left: var(--space-4);
+  z-index: var(--z-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: rgba(10, 14, 20, 0.9);
+  border: 1px solid var(--line-primary);
+  border-radius: 4px;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  backdrop-filter: blur(8px);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.legend-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-swatch.legend-ring {
+  background: transparent;
+  border: 2px solid;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+}
+
+.legend-swatch.legend-patch {
+  border-radius: 3px;
+}
+
+.legend-text {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--font-size-xs);
+}
+
+/* Mode indicator */
+.skysphere-mode-indicator {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: var(--z-panel);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  background: rgba(10, 14, 20, 0.8);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line-secondary);
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+}
+
+/* Polar Fallback */
+.skysphere-polar-fallback {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.polar-fallback-label {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: var(--z-panel);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  background: rgba(10, 14, 20, 0.9);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line-primary);
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+}
+
+/* Leader line container (for the SVG overlay) */
+.skysphere-container .leader-line {
+  pointer-events: none;
+  z-index: var(--z-overlay);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skysphere-tooltip {
+    transition: none;
+  }
+}

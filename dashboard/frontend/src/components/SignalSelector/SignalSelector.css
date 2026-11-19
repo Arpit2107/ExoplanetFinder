@@ -1,0 +1,379 @@
+/* SignalSelector - Searchable combobox for signals/candidates */
+
+.signal-selector {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  min-width: 280px;
+  max-width: 400px;
+}
+
+/* Combobox input wrapper - now contains label + input inline */
+.signal-selector__combobox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  border-radius: 0;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  padding: 0 var(--space-3);
+}
+
+/* Label - now inline prefix inside combobox */
+.signal-selector__label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.signal-selector__combobox:focus-within {
+  border-color: var(--semantic-amber);
+  box-shadow: 0 0 0 1px var(--semantic-amber);
+}
+
+/* Input */
+.signal-selector__input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.signal-selector__input::placeholder {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.signal-selector__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Clear button */
+.signal-selector__clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-left: var(--border-hairline);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.signal-selector__clear-btn:hover {
+  color: var(--semantic-red);
+  background: var(--bg-panel-hover);
+}
+
+.signal-selector__clear-btn:focus-visible {
+  outline: 1px solid var(--semantic-amber);
+  outline-offset: -1px;
+}
+
+/* Chevron */
+.signal-selector__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--space-2);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.signal-selector__chevron svg {
+  transition: transform var(--transition-fast);
+}
+
+.signal-selector__combobox:focus-within .signal-selector__chevron svg {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.signal-selector__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  border-top: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: var(--z-tooltip);
+  overflow: hidden;
+  max-height: calc(var(--space-4) * 20 + 2px); /* MAX_VISIBLE_ITEMS * ITEM_HEIGHT + borders */
+}
+
+.signal-selector__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: calc(32px * 20);
+}
+
+/* Loading state */
+.signal-selector__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.signal-selector__loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--line-primary);
+  border-top-color: var(--semantic-amber);
+  border-radius: 50%;
+  animation: signal-selector-spin 1s linear infinite;
+}
+
+@keyframes signal-selector-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.signal-selector__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  color: var(--semantic-red);
+  font-size: var(--font-size-sm);
+}
+
+/* Empty state */
+.signal-selector__empty {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--text-dim);
+  font-size: var(--font-size-sm);
+}
+
+/* Group header */
+.signal-selector__group-header {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-canvas);
+  border-bottom: var(--border-hairline-dim);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--semantic-amber);
+  cursor: default;
+}
+
+/* Item base */
+.signal-selector__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--border-hairline-dim);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.signal-selector__item:last-child {
+  border-bottom: none;
+}
+
+.signal-selector__item:hover,
+.signal-selector__item--highlighted {
+  background: var(--bg-panel-hover);
+}
+
+.signal-selector__item:focus-visible {
+  outline: 1px solid var(--semantic-amber);
+  outline-offset: -2px;
+}
+
+/* Star item */
+.signal-selector__star-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.signal-selector__star-kepid {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.signal-selector__star-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.signal-selector__star-tces {
+  font-family: var(--font-mono);
+}
+
+.signal-selector__star-planets {
+  color: var(--semantic-amber);
+  font-family: var(--font-mono);
+}
+
+.signal-selector__star-prob {
+  font-family: var(--font-mono);
+}
+
+.signal-selector__chevron-right {
+  margin-left: auto;
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.signal-selector__item:hover .signal-selector__chevron-right,
+.signal-selector__item--highlighted .signal-selector__chevron-right {
+  opacity: 1;
+}
+
+/* TCE item */
+.signal-selector__tce-main {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.signal-selector__tce-id {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+.signal-selector__signal-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.signal-selector__signal-badge--signal {
+  background: var(--semantic-amber);
+  color: var(--bg-canvas);
+}
+
+.signal-selector__signal-badge--candidate {
+  background: var(--semantic-red);
+  color: var(--text-primary);
+}
+
+.signal-selector__tce-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.signal-selector__tce-period {
+  font-family: var(--font-mono);
+}
+
+.signal-selector__tce-prob {
+  font-family: var(--font-mono);
+}
+
+.signal-selector__tce-prob--baseline {
+  color: var(--text-dim);
+}
+
+/* Split badge */
+.signal-selector__split-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.signal-selector__split-badge--test {
+  background: var(--semantic-green);
+  color: var(--bg-canvas);
+}
+
+.signal-selector__split-badge--not-held-out {
+  background: var(--semantic-red);
+  color: var(--text-primary);
+  animation: signal-selector-pulse 2s ease-in-out infinite;
+}
+
+@keyframes signal-selector-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Scroll indicator */
+.signal-selector__scroll-indicator {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2);
+  background: linear-gradient(180deg, transparent, var(--bg-panel) 50%);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .signal-selector__split-badge--not-held-out {
+    animation: none;
+  }
+
+  .signal-selector__chevron svg {
+    transition: none;
+  }
+
+  .signal-selector__combobox,
+  .signal-selector__item,
+  .signal-selector__clear-btn {
+    transition: none;
+  }
+}

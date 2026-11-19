@@ -1,0 +1,262 @@
+/* PRCurve - Precision-Recall curve SVG chart */
+/* Styled to design system: hairlines, mono ticks, no library themes */
+
+.prcurve {
+  display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+.prcurve__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Gridlines */
+.prcurve__gridlines {
+  pointer-events: none;
+}
+
+.prcurve__gridline {
+  stroke: var(--line-secondary);
+  stroke-width: var(--corner-bracket-weight);
+  stroke-dasharray: 2 4;
+}
+
+.prcurve__gridline--major {
+  stroke: var(--line-primary);
+  stroke-dasharray: none;
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Skeleton loading state */
+.prcurve__gridline--skeleton {
+  animation: prcurve-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes prcurve-shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Axes */
+.prcurve__axes {
+  pointer-events: none;
+}
+
+.prcurve__axis {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Ticks */
+.prcurve__x-ticks,
+.prcurve__y-ticks {
+  pointer-events: none;
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+}
+
+.prcurve__tick {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.prcurve__tick--major {
+  stroke: var(--line-secondary);
+}
+
+.prcurve__tick-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Axis labels */
+.prcurve__axis-labels {
+  pointer-events: none;
+}
+
+.prcurve__axis-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  fill: var(--text-secondary);
+}
+
+/* Curves */
+.prcurve__curve-group {
+  transition: opacity var(--transition-fast);
+}
+
+.prcurve__curve {
+  transition: opacity var(--transition-fast);
+}
+
+.prcurve__curve--cnn {
+  /* Gradient applied via stroke="url(#prcurve-gradient-cnn)" */
+}
+
+.prcurve__curve--gb {
+  /* Gradient applied via stroke="url(#prcurve-gradient-gb)" */
+  stroke-dasharray: 4 4;
+}
+
+/* Hover point on curve */
+.prcurve__hover-point {
+  pointer-events: none;
+  transition: r var(--transition-fast);
+}
+
+.prcurve__hover-point:hover {
+  r: 7;
+}
+
+.prcurve__hover-point--cnn {
+  fill: var(--semantic-amber);
+}
+
+.prcurve__hover-point--gb {
+  fill: var(--text-secondary);
+}
+
+/* Metrics readouts */
+.prcurve__metrics {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.prcurve__metric-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prcurve__metric-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  fill: var(--semantic-amber);
+}
+
+.prcurve__metric-group--gb .prcurve__metric-label {
+  fill: var(--text-secondary);
+}
+
+.prcurve__metric-value {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+/* Tooltip */
+.prcurve__tooltip {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.prcurve__tooltip-bg {
+  fill: var(--bg-panel);
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.prcurve__tooltip-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.prcurve__tooltip-row {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+.prcurve__tooltip-label {
+  fill: var(--text-secondary);
+}
+
+.prcurve__tooltip-value {
+  fill: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.prcurve__tooltip-row--metrics {
+  font-size: var(--font-size-xs);
+}
+
+/* Split label */
+.prcurve__split-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Error and empty states */
+.prcurve__error,
+.prcurve__empty {
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .prcurve__gridline--skeleton {
+    animation: none;
+    opacity: 0.4;
+  }
+  .prcurve__curve,
+  .prcurve__hover-point {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .prcurve__gridline,
+  .prcurve__axis,
+  .prcurve__tick {
+    stroke: CanvasText;
+  }
+  .prcurve__tick-label,
+  .prcurve__axis-label {
+    fill: CanvasText;
+  }
+  .prcurve__curve--cnn {
+    stroke: CanvasText;
+    stroke-dasharray: none;
+  }
+  .prcurve__curve--gb {
+    stroke: CanvasText;
+    stroke-dasharray: 4 4;
+  }
+  .prcurve__metric-label {
+    fill: CanvasText;
+  }
+  .prcurve__metric-value {
+    fill: CanvasText;
+  }
+  .prcurve__tooltip-bg {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .prcurve__tooltip-title,
+  .prcurve__tooltip-value {
+    fill: CanvasText;
+  }
+  .prcurve__tooltip-label {
+    fill: CanvasText;
+  }
+}

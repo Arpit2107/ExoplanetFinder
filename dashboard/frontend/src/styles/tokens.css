@@ -1,0 +1,138 @@
+/* Exoplanet Finder Dashboard - Design Tokens */
+/* Mission Control aesthetic: near-black canvas, amber/red accents, mono numbers */
+
+@import '@fontsource/chakra-petch/300.css';
+@import '@fontsource/chakra-petch/400.css';
+@import '@fontsource/chakra-petch/500.css';
+@import '@fontsource/chakra-petch/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import '@fontsource/rajdhani/400.css';
+@import '@fontsource/rajdhani/500.css';
+@import '@fontsource/rajdhani/600.css';
+@import '@fontsource/rajdhani/700.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/700.css';
+
+:root {
+  /* === COLORS === */
+  /* Background */
+  --bg-canvas: #05070a;           /* Near-black full-screen canvas */
+  --bg-panel: #0a0e14;            /* Panel background */
+  --bg-panel-hover: #0d121a;      /* Panel hover */
+
+  /* Structure */
+  --line-primary: #2a2f36;        /* Panel hairlines, grid lines */
+  --line-secondary: #1e242b;      /* Subtle grid, scan texture */
+  --corner-bracket: #3a4048;      /* L-shaped corner brackets */
+
+  /* Text */
+  --text-primary: #e8ecef;        /* Primary labels, numbers */
+  --text-secondary: #8b929c;      /* Secondary text, captions, units */
+  --text-dim: #5a6168;            /* Dim text, disabled */
+
+  /* Semantic - Meaning-coded, NOT decorative */
+  --semantic-amber: #ffb800;      /* Model says PLANET */
+  --semantic-amber-rgb: 255, 184, 0;
+  --semantic-amber-dim: #cc9300;  /* Amber dimmed */
+  --semantic-red: #ff3d3d;        /* Flagged / error suspicion */
+  --semantic-red-rgb: 255, 61, 61;
+  --semantic-red-dim: #cc3030;    /* Red dimmed */
+  --semantic-white: #ffffff;      /* Raw data */
+  --semantic-green: #00e676;      /* CONFIRMED true-planet match ONLY */
+  --semantic-green-rgb: 0, 230, 118;
+  --semantic-green-dim: #00b85c;  /* Green dimmed */
+  --semantic-blue: #4299e1;       /* Info / baseline */
+  --semantic-blue-rgb: 66, 153, 225;
+
+  /* Accents */
+  --accent-orange: #ff8c00;       /* Warning / attention */
+  --accent-orange-dim: #cc7000;   /* Orange dimmed */
+
+  /* Scan texture */
+  --scan-line: rgba(255, 184, 0, 0.03);  /* Amber scanline */
+
+  /* === TYPOGRAPHY === */
+  --font-heading: 'Chakra Petch', 'Rajdhani', 'Oxanium', sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+
+  --font-size-xs: 0.625rem;       /* 10px - tiny captions */
+  --font-size-sm: 0.75rem;        /* 12px - small labels */
+  --font-size-base: 0.875rem;     /* 14px - body */
+  --font-size-lg: 1rem;           /* 16px - large labels */
+  --font-size-xl: 1.5rem;         /* 24px - panel titles */
+  --font-size-2xl: 2.5rem;        /* 40px - big counters */
+  --font-size-3xl: 4rem;          /* 64px - hero numbers */
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  /* Tabular figures for numbers */
+  --font-variant-numeric: tabular-nums;
+
+  /* === SPACING === */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.5rem;    /* 24px */
+  --space-6: 2rem;      /* 32px */
+  --space-8: 3rem;      /* 48px */
+  --space-10: 4rem;     /* 64px */
+
+  /* === PANEL === */
+  --panel-padding: var(--space-4);
+  --panel-gap: var(--space-4);
+  --corner-bracket-size: 1.5rem;  /* 24px L-bracket arms */
+  --corner-bracket-weight: 1px;   /* Hairline */
+  --panel-tag-size: 1.25rem;      /* 20px lettered tag */
+
+  /* === LAYOUT === */
+  --top-bar-height: 3.5rem;       /* 56px */
+  --bottom-strip-height: 2.5rem;  /* 40px */
+  --side-panel-width: 22rem;      /* 352px */
+  --center-min-width: 40rem;      /* 640px minimum for sphere */
+
+  /* === ANIMATION === */
+  --transition-fast: 120ms ease-out;
+  --transition-normal: 200ms ease-out;
+  --transition-slow: 400ms ease-out;
+  --rotation-speed: 60s;          /* Slow sphere rotation */
+  --count-up-duration: 1.2s;
+  --scanline-duration: 800ms;
+
+  /* === BORDERS === */
+  --border-hairline: 1px solid var(--line-primary);
+  --border-hairline-dim: 1px solid var(--line-secondary);
+
+  /* === Z-INDEX === */
+  --z-base: 1;
+  --z-panel: 10;
+  --z-overlay: 100;
+  --z-tooltip: 1000;
+}
+
+/* === UTILITY CLASSES === */
+.text-amber { color: var(--semantic-amber); }
+.text-red { color: var(--semantic-red); }
+.text-green { color: var(--semantic-green); }
+.text-white { color: var(--semantic-white); }
+.text-secondary { color: var(--text-secondary); }
+.text-dim { color: var(--text-dim); }
+
+.font-heading { font-family: var(--font-heading); }
+.font-mono { font-family: var(--font-mono); }
+
+.uppercase { text-transform: uppercase; }
+.letter-spacing-tight { letter-spacing: -0.02em; }
+.letter-spacing-wide { letter-spacing: 0.1em; }
+
+.tabular-nums { font-variant-numeric: tabular-nums; }

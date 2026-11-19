@@ -1,0 +1,88 @@
+/* CounterReadout - Animated instrument-style counter */
+
+.counter-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.counter-readout__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+  line-height: var(--line-height-tight);
+}
+
+.counter-readout__number {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-light);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.counter-readout__decimal {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-light);
+  color: var(--text-secondary);
+}
+
+.counter-readout__unit {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  margin-bottom: 0.1em;
+  white-space: nowrap;
+}
+
+.counter-readout__label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+/* Color variants */
+.counter-readout--amber .counter-readout__number { color: var(--semantic-amber); }
+.counter-readout--red .counter-readout__number { color: var(--semantic-red); }
+.counter-readout--green .counter-readout__number { color: var(--semantic-green); }
+.counter-readout--white .counter-readout__number { color: var(--semantic-white); }
+
+/* Count-up animation - subtle entry animation */
+.counter-readout--animating .counter-readout__number {
+  animation: counter-count-up var(--count-up-duration) ease-out forwards;
+}
+
+@keyframes counter-count-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Size variants */
+.counter-readout--large .counter-readout__number {
+  font-size: var(--font-size-3xl);
+}
+
+.counter-readout--medium .counter-readout__number {
+  font-size: var(--font-size-xl);
+}
+
+/* Staggered animation for multiple readouts */
+.counter-readout:nth-child(1) { animation-delay: 0ms; }
+.counter-readout:nth-child(2) { animation-delay: 100ms; }
+.counter-readout:nth-child(3) { animation-delay: 200ms; }
+.counter-readout:nth-child(4) { animation-delay: 300ms; }

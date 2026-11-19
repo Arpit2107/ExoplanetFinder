@@ -1,0 +1,108 @@
+/* Panel - Thin framed panel with corner brackets, lettered tag, title and subtitle */
+
+.panel {
+  position: relative;
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  border-radius: 0;
+  padding: var(--panel-padding);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: background-color var(--transition-fast);
+}
+
+.panel:hover {
+  background: var(--bg-panel-hover);
+}
+
+/* Tag - lettered identifier in corner */
+.panel__tag {
+  position: absolute;
+  top: calc(var(--panel-padding) * -1);
+  left: calc(var(--panel-padding) * -1);
+  width: var(--panel-tag-size);
+  height: var(--panel-tag-size);
+  background: var(--semantic-amber);
+  color: var(--bg-canvas);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.panel__tag--tr {
+  top: calc(var(--panel-padding) * -1);
+  left: auto;
+  right: calc(var(--panel-padding) * -1);
+}
+
+.panel__tag--bl {
+  top: auto;
+  bottom: calc(var(--panel-padding) * -1);
+  left: calc(var(--panel-padding) * -1);
+}
+
+.panel__tag--br {
+  top: auto;
+  bottom: calc(var(--panel-padding) * -1);
+  left: auto;
+  right: calc(var(--panel-padding) * -1);
+}
+
+/* Header with title and subtitle */
+.panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.panel__title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+.panel__subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: var(--line-height-tight);
+}
+
+/* Content area */
+.panel__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* No clip variant - for dropdowns and other content that needs to overflow */
+.panel__content--no-clip {
+  overflow: visible;
+}
+
+/* Panel scanline animation on load */
+.panel-scan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--semantic-amber), transparent);
+  animation: panel-scan var(--scanline-duration) ease-out forwards;
+  pointer-events: none;
+}

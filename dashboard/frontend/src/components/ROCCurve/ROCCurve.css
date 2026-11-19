@@ -1,0 +1,275 @@
+/* ROCCurve - ROC (Receiver Operating Characteristic) curve SVG chart */
+/* Styled to design system: hairlines, mono ticks, no library themes */
+
+.roccurve {
+  display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+}
+
+.roccurve__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* Gridlines */
+.roccurve__gridlines {
+  pointer-events: none;
+}
+
+.roccurve__gridline {
+  stroke: var(--line-secondary);
+  stroke-width: var(--corner-bracket-weight);
+  stroke-dasharray: 2 4;
+}
+
+.roccurve__gridline--major {
+  stroke: var(--line-primary);
+  stroke-dasharray: none;
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Skeleton loading state */
+.roccurve__gridline--skeleton {
+  animation: roccurve-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes roccurve-shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Reference line (diagonal y=x) */
+.roccurve__reference {
+  pointer-events: none;
+}
+
+.roccurve__reference-line {
+  stroke: var(--line-secondary);
+  stroke-width: var(--corner-bracket-weight);
+  stroke-dasharray: 4 4;
+  opacity: 0.5;
+}
+
+/* Axes */
+.roccurve__axes {
+  pointer-events: none;
+}
+
+.roccurve__axis {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+/* Ticks */
+.roccurve__x-ticks,
+.roccurve__y-ticks {
+  pointer-events: none;
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+}
+
+.roccurve__tick {
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.roccurve__tick--major {
+  stroke: var(--line-secondary);
+}
+
+.roccurve__tick-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  fill: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Axis labels */
+.roccurve__axis-labels {
+  pointer-events: none;
+}
+
+.roccurve__axis-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  fill: var(--text-secondary);
+}
+
+/* Curves */
+.roccurve__curve-group {
+  transition: opacity var(--transition-fast);
+}
+
+.roccurve__curve {
+  transition: opacity var(--transition-fast);
+}
+
+.roccurve__curve--cnn {
+  /* Gradient applied via stroke="url(#roccurve-gradient-cnn)" */
+}
+
+.roccurve__curve--gb {
+  /* Gradient applied via stroke="url(#roccurve-gradient-gb)" */
+  stroke-dasharray: 4 4;
+}
+
+/* Hover point on curve */
+.roccurve__hover-point {
+  pointer-events: none;
+  transition: r var(--transition-fast);
+}
+
+.roccurve__hover-point:hover {
+  r: 7;
+}
+
+.roccurve__hover-point--cnn {
+  fill: var(--semantic-amber);
+}
+
+.roccurve__hover-point--gb {
+  fill: var(--text-secondary);
+}
+
+/* Metrics readouts */
+.roccurve__metrics {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.roccurve__metric-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roccurve__metric-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  fill: var(--semantic-amber);
+}
+
+.roccurve__metric-group--gb .roccurve__metric-label {
+  fill: var(--text-secondary);
+}
+
+.roccurve__metric-value {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+/* Tooltip */
+.roccurve__tooltip {
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.roccurve__tooltip-bg {
+  fill: var(--bg-panel);
+  stroke: var(--line-primary);
+  stroke-width: var(--corner-bracket-weight);
+}
+
+.roccurve__tooltip-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.roccurve__tooltip-row {
+  font-size: var(--font-size-xs);
+  fill: var(--text-primary);
+}
+
+.roccurve__tooltip-label {
+  fill: var(--text-secondary);
+}
+
+.roccurve__tooltip-value {
+  fill: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.roccurve__tooltip-row--metrics {
+  font-size: var(--font-size-xs);
+}
+
+/* Split label */
+.roccurve__split-label {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Error and empty states */
+.roccurve__error,
+.roccurve__empty {
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .roccurve__gridline--skeleton {
+    animation: none;
+    opacity: 0.4;
+  }
+  .roccurve__curve,
+  .roccurve__hover-point {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .roccurve__gridline,
+  .roccurve__axis,
+  .roccurve__tick,
+  .roccurve__reference-line {
+    stroke: CanvasText;
+  }
+  .roccurve__tick-label,
+  .roccurve__axis-label {
+    fill: CanvasText;
+  }
+  .roccurve__curve--cnn {
+    stroke: CanvasText;
+    stroke-dasharray: none;
+  }
+  .roccurve__curve--gb {
+    stroke: CanvasText;
+    stroke-dasharray: 4 4;
+  }
+  .roccurve__metric-label {
+    fill: CanvasText;
+  }
+  .roccurve__metric-value {
+    fill: CanvasText;
+  }
+  .roccurve__tooltip-bg {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .roccurve__tooltip-title,
+  .roccurve__tooltip-value {
+    fill: CanvasText;
+  }
+  .roccurve__tooltip-label {
+    fill: CanvasText;
+  }
+}

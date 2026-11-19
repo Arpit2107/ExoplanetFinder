@@ -1,0 +1,184 @@
+/* SplitTable - Train/Val/Test split statistics table */
+/* Styled to design system: hairlines, mono numbers, Chakra Petch headers */
+
+.split-table__container {
+  overflow-x: auto;
+  min-height: 0;
+}
+
+.split-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  table-layout: fixed;
+}
+
+/* Header */
+.split-table__header-row {
+  border-bottom: var(--border-hairline);
+}
+
+.split-table__header {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  white-space: nowrap;
+  background: var(--bg-panel);
+}
+
+/* Body rows */
+.split-table__row {
+  border-bottom: var(--border-hairline-dim);
+  transition: background-color var(--transition-fast);
+}
+
+.split-table__row:last-child {
+  border-bottom: none;
+}
+
+.split-table__row:hover {
+  background: var(--bg-panel-hover);
+}
+
+/* Last row variant (test split) */
+.split-table__row--last {
+  border-bottom: var(--border-hairline);
+}
+
+/* Cells */
+.split-table__cell {
+  padding: var(--space-2) var(--space-3);
+  vertical-align: middle;
+}
+
+/* Split label column */
+.split-table__cell--split {
+  width: 18%;
+}
+
+.split-table__split-label {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+/* Stars column - mono numbers */
+.split-table__cell--stars {
+  width: 22%;
+  text-align: right;
+}
+
+/* TCEs column - mono numbers */
+.split-table__cell--tces {
+  width: 22%;
+  text-align: right;
+}
+
+/* Fraction column - mono numbers */
+.split-table__cell--fraction {
+  width: 38%;
+  text-align: right;
+}
+
+/* Mono number values */
+.split-table__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Stars - neutral */
+.split-table__value--stars {
+  color: var(--text-primary);
+}
+
+/* TCEs - amber tint */
+.split-table__value--tces {
+  color: var(--semantic-amber);
+}
+
+/* Planet fraction - green for confirmed planets */
+.split-table__value--fraction {
+  color: var(--semantic-green);
+}
+
+/* Split-specific row styling */
+.split-table__row--train .split-table__split-label {
+  color: var(--semantic-amber);
+}
+
+.split-table__row--val .split-table__split-label {
+  color: var(--accent-orange);
+}
+
+.split-table__row--test .split-table__split-label {
+  color: var(--semantic-green);
+}
+
+/* Loading state */
+.split-table--loading .split-table__skeleton {
+  padding: var(--space-2);
+}
+
+.split-table__row--skeleton {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--border-hairline-dim);
+}
+
+.split-table__row--skeleton:last-child {
+  border-bottom: none;
+}
+
+.split-table__cell {
+  flex: 1;
+  height: 1.5rem;
+  background: linear-gradient(90deg, var(--line-secondary) 25%, var(--line-primary) 50%, var(--line-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 2px;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Error state */
+.split-table--error .split-table__error {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--semantic-red);
+  text-align: center;
+  padding: var(--space-4);
+}
+
+/* Empty state */
+.split-table__empty {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-dim);
+  text-align: center;
+  padding: var(--space-4);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .split-table__cell {
+    animation: none;
+    background: var(--line-secondary);
+  }
+}

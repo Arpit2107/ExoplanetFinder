@@ -1,0 +1,16 @@
+# ML / Data Science pinned dependencies for exoplanet-finder
+# Generated from pip freeze on 2026-11-19
+# Only packages actually imported by src/ scripts
+
+astropy==7.0.1
+lightkurve==2.6.0
+scikit-learn==1.9.1
+lightgbm==4.5.0
+matplotlib==3.11.2
+numpy==2.2.6
+pandas==2.3.3
+torch==2.14.0
+torchvision==0.29.0
+tqdm==4.67.1
+joblib==1.6.0
+scipy==1.17.1

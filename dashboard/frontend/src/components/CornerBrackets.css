@@ -1,0 +1,57 @@
+/* CornerBrackets - L-shaped corner brackets */
+/* 1px hairline, no full border */
+
+.corner-brackets {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.corner-brackets__corner {
+  position: absolute;
+  width: var(--corner-bracket-size);
+  height: var(--corner-bracket-size);
+  border: var(--corner-bracket-weight) solid var(--corner-bracket);
+}
+
+.corner-brackets__corner--tl {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-brackets__corner--tr {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.corner-brackets__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.corner-brackets__corner--br {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+/* Color variants */
+.corner-brackets--amber .corner-brackets__corner {
+  border-color: var(--semantic-amber);
+}
+
+.corner-brackets--red .corner-brackets__corner {
+  border-color: var(--semantic-red);
+}
+
+.corner-brackets--green .corner-brackets__corner {
+  border-color: var(--semantic-green);
+}

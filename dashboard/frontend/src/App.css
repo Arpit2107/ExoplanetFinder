@@ -1,0 +1,667 @@
+/* App - Main layout for Exoplanet Finder dashboard */
+/* 1920x1080 base, responsive to 1366x768 and tablet */
+
+:root {
+  /* Layout dimensions */
+  --top-bar-height: 64px;
+  --bottom-strip-height: 104px;  /* Increased to accommodate mode switch + threshold panel */
+  --side-panel-width: 320px;
+  --center-min-width: 400px;
+  --inspector-width: 400px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Z-index layers */
+  --z-base: 1;
+  --z-panel: 10;
+  --z-sticky: 50;
+  --z-modal: 100;
+  --z-tooltip: 200;
+  --z-overlay: 150;
+
+  /* Borders */
+  --border-hairline: 1px solid var(--line-primary);
+
+  /* Typography */
+  --font-heading: 'Chakra Petch', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 28px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent page scroll - panels handle their own */
+  font-family: var(--font-ui);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   APP ROOT
+   ============================================================ */
+
+.app {
+  display: grid;
+  grid-template-rows:
+    var(--top-bar-height)
+    1fr
+    var(--bottom-strip-height);
+  min-height: 100vh;
+  min-width: 100vw;
+  background: var(--bg-canvas);
+  overflow: hidden; /* Critical: no page-level scroll */
+  position: relative;
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.app > .top-bar {
+  z-index: var(--z-sticky);
+}
+
+/* ============================================================
+   MAIN GRID LAYOUT - Fixed height between top bar and bottom strip
+   ============================================================ */
+
+.app__main {
+  display: grid;
+  grid-template-columns:
+    var(--side-panel-width)
+    1fr
+    var(--side-panel-width);
+  grid-template-rows: 1fr;
+  grid-row: 2; /* Explicit placement: TopBar is fixed (out of flow), so main must be in row 2 */
+  height: 100%;
+  min-height: 0;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  overflow: hidden;
+}
+
+/* ============================================================
+   SIDE PANELS - Left and Right use internal grid for row sizing
+   ============================================================ */
+
+.app__side {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: var(--space-4);
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Left column specific row sizing */
+.app__side--left {
+  /* Row 1: TCE COUNTS - auto (content only) */
+  /* Row 2: SPLITS - auto (content only) */
+  /* Row 3: TOP CANDIDATES - 1fr (fills remaining, scrolls internally) */
+}
+
+/* Right column specific row sizing - 3 equal rows */
+.app__side--right {
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+/* Panels inside side columns */
+.app__side > .panel,
+.app__side > [class*="app__right-panel"] {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Panel content should not overflow */
+.app__side .panel__content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  flex: 1;
+}
+
+/* Right panels in default mode - equal height */
+.app__right-panel {
+  height: 100%;
+}
+
+/* Right panel full height (for errors/compare/kepler90 modes) */
+.app__right-panel-full {
+  grid-row: 1 / -1;
+  height: 100%;
+}
+
+/* ============================================================
+   CENTER SPHERE AREA
+   ============================================================ */
+
+.app__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+  /* Prevent center from collapsing */
+  min-width: var(--center-min-width);
+}
+
+.sphere-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+}
+
+.sphere-container canvas,
+.sphere-container .skysphere-polar-fallback {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* ============================================================
+   INSPECTOR PANEL OVERLAY
+   ============================================================ */
+
+.inspector__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 10, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: calc(var(--z-modal) - 1);
+  opacity: 0;
+  animation: inspectorOverlayFadeIn 0.2s ease forwards;
+  pointer-events: auto;
+}
+
+@keyframes inspectorOverlayFadeIn {
+  to { opacity: 1; }
+}
+
+.inspector__panel {
+  position: fixed;
+  top: calc(var(--top-bar-height) + var(--space-4));
+  right: var(--space-4);
+  bottom: calc(var(--bottom-strip-height) + var(--space-4));
+  width: var(--inspector-width);
+  max-height: calc(100vh - var(--top-bar-height) - var(--bottom-strip-height) - var(--space-4) * 2);
+  z-index: var(--z-modal);
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+  transform: translateX(100%);
+  animation: inspectorSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@keyframes inspectorSlideIn {
+  to { transform: translateX(0); }
+}
+
+/* ============================================================
+   LEADER LINE LAYER
+   ============================================================ */
+
+.leader-line-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: calc(var(--z-panel) + 5);
+  overflow: visible;
+}
+
+/* LeaderLine component handles its own SVG positioning */
+
+/* ============================================================
+   BOTTOM BAR - Fixed at bottom, contains legend + mode + threshold
+   ============================================================ */
+
+.app__bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-strip-height);
+  background: var(--bg-panel);
+  border-top: var(--border-hairline);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0 var(--space-6);
+}
+
+.app__bottom-inner {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1920px;
+  gap: var(--space-6);
+  height: 100%;
+  padding: var(--space-3) 0;
+}
+
+/* Left: Legend strip */
+.app__bottom .legend-strip {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Center: Mode switch - slim horizontal */
+.app__bottom-mode {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 0;
+}
+
+.app__bottom-mode .mode-switch--horizontal {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Right: Threshold panel - collapsible, docked */
+.app__bottom-threshold {
+  flex: 0 0 auto;
+  max-width: 380px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+
+/* Ensure threshold panel fits in bottom strip */
+.app__bottom-threshold .threshold-panel {
+  height: 100%;
+  min-height: 0;
+}
+
+/* ============================================================
+   RESPONSIVE: 1366x768 (Laptop)
+   ============================================================ */
+
+@media (max-width: 1440px) {
+  :root {
+    --side-panel-width: 300px;
+    --inspector-width: 380px;
+    --center-min-width: 360px;
+    --bottom-strip-height: 100px;
+  }
+
+  .app__main {
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .inspector__panel {
+    top: calc(var(--top-bar-height) + var(--space-3));
+    right: var(--space-3);
+    bottom: calc(var(--bottom-strip-height) + var(--space-3));
+    width: var(--inspector-width);
+  }
+
+  .app__bottom {
+    padding: 0 var(--space-4);
+  }
+
+  .app__bottom-inner {
+    gap: var(--space-4);
+  }
+
+  .app__bottom-threshold {
+    max-width: 340px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE: TABLET (≤1024px)
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  :root {
+    --side-panel-width: 100%;
+    --inspector-width: 100%;
+    --center-min-width: 320px;
+    --bottom-strip-height: auto;
+  }
+
+  .app__main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .app__side {
+    grid-template-rows: auto auto auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    gap: var(--space-3);
+    max-height: none;
+    overflow-y: visible;
+    order: 2; /* Side panels after center on tablet */
+  }
+
+  .app__side--right {
+    grid-template-rows: auto auto auto;
+  }
+
+  .app__side > .panel,
+  .app__side > [class*="app__right-panel"] {
+    flex: 1;
+    min-width: 280px;
+    min-height: 220px;
+    max-height: 380px;
+    height: auto;
+  }
+
+  .app__right-panel-full {
+    grid-row: auto;
+    min-width: 280px;
+  }
+
+  .app__center {
+    order: 1; /* Center first on tablet */
+    min-height: 380px;
+    max-height: 50vh;
+  }
+
+  .sphere-container {
+    max-width: 480px;
+  }
+
+  .inspector__overlay {
+    backdrop-filter: none;
+    background: rgba(5, 7, 10, 0.6);
+  }
+
+  .inspector__panel {
+    position: fixed;
+    top: var(--top-bar-height);
+    right: 0;
+    bottom: calc(var(--bottom-strip-height) + var(--space-3));
+    left: 0;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+    z-index: var(--z-modal);
+  }
+
+  .leader-line-layer {
+    display: none; /* Hide leader line on tablet - inspector is full width */
+  }
+
+  .app__bottom {
+    padding: 0 var(--space-4);
+    height: auto;
+    min-height: 100px;
+  }
+
+  .app__bottom-inner {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: stretch;
+    height: auto;
+    padding: var(--space-3) 0;
+  }
+
+  .app__bottom .legend-strip {
+    order: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app__bottom-mode {
+    order: 1;
+    justify-content: center;
+  }
+
+  .app__bottom-threshold {
+    order: 2;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE: MOBILE (≤640px)
+   ============================================================ */
+
+@media (max-width: 640px) {
+  :root {
+    --top-bar-height: 44px;
+    --bottom-strip-height: auto;
+  }
+
+  .app__main {
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .app__side {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .app__side > .panel,
+  .app__side > [class*="app__right-panel"] {
+    min-width: 0;
+    width: 100%;
+    min-height: 180px;
+    max-height: 300px;
+  }
+
+  .app__center {
+    min-height: 280px;
+    max-height: 45vh;
+  }
+
+  .sphere-container {
+    max-width: 100%;
+  }
+
+  .inspector__panel {
+    top: var(--top-bar-height);
+    bottom: var(--space-2);
+  }
+
+  .app__bottom {
+    position: static;
+    height: auto;
+    min-height: auto;
+    padding: var(--space-2);
+    border-top: var(--border-hairline);
+    margin-top: var(--space-2);
+  }
+
+  .app__bottom-inner {
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+  }
+
+  .app__bottom .legend-strip {
+    order: 0;
+  }
+
+  .app__bottom-mode {
+    order: 1;
+  }
+
+  .app__bottom-threshold {
+    order: 2;
+  }
+
+  .legend-strip--horizontal {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+}
+
+/* ============================================================
+   SCROLLBAR STYLING
+   ============================================================ */
+
+.app__side::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app__side::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app__side::-webkit-scrollbar-thumb {
+  background: var(--line-secondary);
+  border-radius: 0;
+}
+
+.app__side::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+.app__side {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-secondary) transparent;
+}
+
+/* ============================================================
+   PANEL OVERRIDES FOR APP LAYOUT
+   ============================================================ */
+
+/* Ensure panels in app layout don't have extra margins */
+.app__side .panel {
+  margin: 0;
+}
+
+/* Panel content should not overflow */
+.panel__content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+}
+
+/* ============================================================
+   TOP CANDIDATES DROPDOWN - Ensure not clipped
+   ============================================================ */
+
+.top-candidates__controls {
+  /* Allow dropdown to overflow visually */
+  overflow: visible;
+}
+
+.top-candidates__split-select {
+  /* Native select - opens downward, not clipped by panel */
+  z-index: 100;
+  position: relative;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .inspector__overlay,
+  .inspector__panel,
+  .sphere-grid,
+  .crosshair-h,
+  .crosshair-v {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .inspector__panel {
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   FOCUS VISIBLE FOR ACCESSIBILITY
+   ============================================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--semantic-amber);
+  outline-offset: 2px;
+}
+
+/* Remove outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+
+@media print {
+  .app__bottom,
+  .inspector__overlay,
+  .inspector__panel,
+  .leader-line-layer,
+  .threshold-slider,
+  .legend-strip {
+    display: none !important;
+  }
+
+  .app__main {
+    display: block;
+    padding: 0;
+    height: auto;
+  }
+
+  .app__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    page-break-inside: avoid;
+  }
+
+  .app__center {
+    page-break-inside: avoid;
+  }
+}

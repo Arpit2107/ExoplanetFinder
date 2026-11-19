@@ -1,0 +1,268 @@
+/* ModeSwitch - Segmented control for dashboard view modes
+ * EXPLORE | ERRORS | COMPARE | KEPLER-90
+ */
+
+.mode-switch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-panel);
+  border: var(--border-hairline);
+  font-family: var(--font-mono);
+  min-width: 200px;
+}
+
+/* Label group */
+.mode-switch__label-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.mode-switch__title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.mode-switch__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Segments container */
+.mode-switch__segments {
+  display: flex;
+  gap: var(--space-1);
+  background: var(--bg-canvas);
+  padding: var(--space-1);
+  border: var(--border-hairline-dim);
+}
+
+/* Individual segment */
+.mode-switch__segment {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+  min-height: 44px; /* Touch target */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mode-switch__segment:hover {
+  color: var(--text-primary);
+  background: var(--bg-panel-hover);
+}
+
+.mode-switch__segment:focus-visible {
+  outline: 1px solid var(--semantic-amber);
+  outline-offset: -1px;
+  z-index: 1;
+}
+
+/* Active segment */
+.mode-switch__segment--active {
+  color: var(--bg-canvas);
+  background: var(--semantic-amber);
+}
+
+.mode-switch__segment--active:hover {
+  color: var(--bg-canvas);
+  background: var(--semantic-amber-dim);
+}
+
+/* Segment label */
+.mode-switch__segment-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast);
+}
+
+/* Keyboard shortcut key indicator */
+.mode-switch__segment-key {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-dim);
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.mode-switch__segment:hover .mode-switch__segment-key {
+  opacity: 1;
+}
+
+.mode-switch__segment--active .mode-switch__segment-key {
+  color: var(--bg-canvas);
+  opacity: 0.8;
+}
+
+/* Active indicator (animated underline) */
+.mode-switch__segment-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--semantic-red);
+  animation: mode-indicator-in var(--transition-fast) ease-out;
+}
+
+@keyframes mode-indicator-in {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Description text */
+.mode-switch__description {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
+  padding: var(--space-2);
+  background: var(--bg-canvas);
+  border: var(--border-hairline-dim);
+  min-height: 3rem;
+  transition: opacity var(--transition-fast);
+}
+
+/* Compact variant (for tight spaces) */
+.mode-switch--compact .mode-switch__segments {
+  gap: 0;
+}
+
+.mode-switch--compact .mode-switch__segment {
+  padding: var(--space-2) var(--space-2);
+  min-height: 36px;
+}
+
+.mode-switch--compact .mode-switch__segment-label {
+  font-size: var(--font-size-xs);
+}
+
+.mode-switch--compact .mode-switch__segment-key {
+  display: none;
+}
+
+.mode-switch--compact .mode-switch__description {
+  display: none;
+}
+
+/* Horizontal variant (segments in a row) */
+.mode-switch--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-4);
+  min-width: auto;
+}
+
+.mode-switch--horizontal .mode-switch__label-group {
+  flex-shrink: 0;
+  margin-top: var(--space-1);
+}
+
+/* Compact horizontal variant for bottom strip - very slim */
+.mode-switch--compact-horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  min-width: auto;
+  height: 100%;
+}
+
+.mode-switch--compact-horizontal .mode-switch__label-group {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.mode-switch--compact-horizontal .mode-switch__title {
+  font-size: var(--font-size-xs);
+}
+
+.mode-switch--compact-horizontal .mode-switch__subtitle {
+  display: none; /* Hide subtitle in compact mode */
+}
+
+.mode-switch--compact-horizontal .mode-switch__segments {
+  padding: var(--space-1);
+  background: var(--bg-canvas);
+  border: var(--border-hairline-dim);
+}
+
+.mode-switch--compact-horizontal .mode-switch__segment {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.mode-switch--compact-horizontal .mode-switch__segment-key {
+  display: none; /* Hide key hints in compact mode */
+}
+
+.mode-switch--compact-horizontal .mode-switch__segment-indicator {
+  height: 1px;
+}
+
+.mode-switch--compact-horizontal .mode-switch__description {
+  display: none; /* Hide description in compact mode */
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mode-switch__segment,
+  .mode-switch__segment-label,
+  .mode-switch__segment-key,
+  .mode-switch__segment-indicator,
+  .mode-switch__description {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .mode-switch__segment {
+    border: 1px solid var(--line-primary);
+  }
+
+  .mode-switch__segment--active {
+    border-color: var(--semantic-amber);
+  }
+
+  .mode-switch__segment:focus-visible {
+    outline-width: 2px;
+  }
+}
